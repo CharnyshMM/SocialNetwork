@@ -3,22 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Database.Migrations
 {
-    public partial class init : Migration
+    public partial class message_dialog_user_reviewed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "DialogModel",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DialogModel", x => x.ID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -57,6 +45,33 @@ namespace Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Dialogs",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DialogName = table.Column<string>(nullable: true),
+                    InitiatorID = table.Column<int>(nullable: true),
+                    AddresseeID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dialogs", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Dialogs_Users_AddresseeID",
+                        column: x => x.AddresseeID,
+                        principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Dialogs_Users_InitiatorID",
+                        column: x => x.InitiatorID,
+                        principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Friendships",
                 columns: table => new
                 {
@@ -83,33 +98,6 @@ namespace Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DialogID = table.Column<int>(nullable: false),
-                    AuthorID = table.Column<int>(nullable: false),
-                    Content = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Messages", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Messages_Users_AuthorID",
-                        column: x => x.AuthorID,
-                        principalTable: "Users",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Messages_DialogModel_DialogID",
-                        column: x => x.DialogID,
-                        principalTable: "DialogModel",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -130,25 +118,28 @@ namespace Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDialogModel",
+                name: "Messages",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(nullable: false),
-                    DialogID = table.Column<int>(nullable: false)
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AuthorID = table.Column<int>(nullable: false),
+                    DialogID = table.Column<int>(nullable: false),
+                    Content = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDialogModel", x => new { x.UserID, x.DialogID });
+                    table.PrimaryKey("PK_Messages", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_UserDialogModel_DialogModel_DialogID",
-                        column: x => x.DialogID,
-                        principalTable: "DialogModel",
+                        name: "FK_Messages_Users_AuthorID",
+                        column: x => x.AuthorID,
+                        principalTable: "Users",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserDialogModel_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
+                        name: "FK_Messages_Dialogs_DialogID",
+                        column: x => x.DialogID,
+                        principalTable: "Dialogs",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -158,6 +149,16 @@ namespace Database.Migrations
                 table: "Credentials",
                 column: "UserID",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dialogs_AddresseeID",
+                table: "Dialogs",
+                column: "AddresseeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dialogs_InitiatorID",
+                table: "Dialogs",
+                column: "InitiatorID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friendships_FriendID",
@@ -183,11 +184,6 @@ namespace Database.Migrations
                 name: "IX_Posts_AuthorID",
                 table: "Posts",
                 column: "AuthorID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserDialogModel_DialogID",
-                table: "UserDialogModel",
-                column: "DialogID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -205,10 +201,7 @@ namespace Database.Migrations
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "UserDialogModel");
-
-            migrationBuilder.DropTable(
-                name: "DialogModel");
+                name: "Dialogs");
 
             migrationBuilder.DropTable(
                 name: "Users");

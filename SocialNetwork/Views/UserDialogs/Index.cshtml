@@ -1,0 +1,26 @@
+﻿@*
+	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<Database.Models.DialogModel>
+@{
+
+	ViewData["Title"] = "UserDialogs";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Dialogs:</h1>
+<p>
+	<a asp-controller="UserDialogs" asp-action="Create">Create New Message</a>
+</p>
+<ul>
+	@foreach (var d in Model)
+	{
+		<li>
+			<div class="row">
+				<div class="col-md-1">Addressee: @d.AddresseeID</div>
+				<div class="col-md-1">Initiator: @d.InitiatorID</div>
+				<div class="col-md-3"><h3>DialogName: @d.DialogName</h3></div>
+			</div>
+		</li>
+	}
+</ul>

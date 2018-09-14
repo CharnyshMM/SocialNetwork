@@ -7,6 +7,7 @@ namespace Database.Interfaces
 {
     public interface IDialogsRepository: IRepository<DialogModel>
     {
-        List<DialogModel> GetUserDialogsByUserID(int userId);
+        List<DialogModel> GetUserDialogs(int userID);
+        DialogModel GetDialogWithMessages(int dialogID);
     }
 }

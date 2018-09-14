@@ -8,7 +8,15 @@ namespace Database.Models
     {
         public int ID { get; set; }
 
-        public List<UserDialogModel> DialogUsers { get; set; }
+        public string DialogName { get; set; }
+
+        public int? InitiatorID { get; set; }
+
+        public UserModel Initiator { get; set; }
+
+        public int? AddresseeID { get; set; }
+
+        public UserModel Addressee { get; set; }
 
         public List<MessageModel> Messages { get; set; }
     }

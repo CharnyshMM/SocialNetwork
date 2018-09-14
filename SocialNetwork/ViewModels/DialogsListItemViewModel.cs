@@ -7,7 +7,7 @@ namespace SocialNetwork.ViewModels
 {
     public class DialogsListItemViewModel
     {
-        public int DialogID { get; set; }
+        public int ID { get; set; }
 
         public string DialogName { get; set; }
 

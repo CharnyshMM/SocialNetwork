@@ -20,7 +20,11 @@ namespace Database.Models
 
         public List<FriendshipModel> FriendOf { get; set; }
 
-        public List<UserDialogModel> UserDialogs { get; set; }
+        public List<DialogModel> UserDialogs { get; set; }
+
+        public List<DialogModel> DialogsToUser { get; set; }
+
+        public List<MessageModel> Messages { get; set; }
 
         public CredentialModel Credential { get; set; } // primary
 

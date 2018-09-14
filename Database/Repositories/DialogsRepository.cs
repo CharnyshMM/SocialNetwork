@@ -4,6 +4,7 @@ using System.Text;
 using Database.Models;
 using Database.Interfaces;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Database.Repositories
 {
@@ -13,9 +14,16 @@ namespace Database.Repositories
         {
         }
 
-        public List<DialogModel> GetUserDialogsByUserID(int userId)
+        public List<DialogModel> GetUserDialogs(int userID)
         {
-            throw new NotImplementedException();
+            return DbSet.Where(d => d.AddresseeID == userID || d.InitiatorID == userID).ToList();
+        }
+
+        public DialogModel GetDialogWithMessages(int dialogID)
+        {
+            var item = GetItem(dialogID);
+            Context.Entry(item).Collection(d => d.Messages).Load();
+            return item;
         }
     }
 }

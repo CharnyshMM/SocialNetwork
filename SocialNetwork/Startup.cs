@@ -15,6 +15,8 @@ using Database.Interfaces;
 using Database.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SocialNetwork.Services;
+using SocialNetwork.Services.Interfaces;
 
 namespace SocialNetwork
 {
@@ -48,6 +50,9 @@ namespace SocialNetwork
             services.AddScoped<IMessagesRepository, MessagesRepository>();
             services.AddScoped<IDialogsRepository, DialogsRepository>();
             services.AddScoped<IPostsRepository, PostsRepository>();
+
+            services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IDialogsService, DialogsService>();
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

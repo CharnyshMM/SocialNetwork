@@ -17,8 +17,6 @@ namespace Database
 
         DbSet<DialogModel> Dialogs { get; set; }
 
-        DbSet<UserDialogModel> UserDialogs { get; set; }
-
         DbSet<PostModel> Posts { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -31,20 +29,23 @@ namespace Database
                 .HasOne(u => u.User)
                 .WithOne(c => c.Credential);
 
-            modelBuilder.Entity<UserDialogModel>()
-                .HasKey(ud => new { ud.UserID, ud.DialogID });
+            modelBuilder.Entity<UserModel>()
+                .HasMany(u => u.UserDialogs)
+                .WithOne(d => d.Initiator)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<UserDialogModel>()
-                .HasOne(du => du.Dialog)
-                .WithMany(d => d.DialogUsers);
+            modelBuilder.Entity<UserModel>()
+                .HasMany(u => u.DialogsToUser)
+                .WithOne(d => d.Addressee)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<UserDialogModel>()
-                .HasOne(du => du.User)
-                .WithMany(u => u.UserDialogs);
+            modelBuilder.Entity<UserModel>()
+                .HasMany(u => u.Messages)
+                .WithOne(m => m.Author);
 
-            modelBuilder.Entity<DialogModel>()
-                .HasMany(d => d.DialogUsers)
-                .WithOne(du => du.Dialog);
+            modelBuilder.Entity<MessageModel>()
+                .HasOne(m => m.Dialog)
+                .WithMany(d => d.Messages);
 
             modelBuilder.Entity<UserModel>()
                 .HasMany(u => u.Posts)

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Database.Models;
 using Database.Interfaces;
+using SocialNetwork.Services.Interfaces;
 
 namespace SocialNetwork.Services
 {
-    public class DialogsService
+    public class DialogsService : IDialogsService
     {
         IUsersRepository _usersRepository;
         IDialogsRepository _dialogsRepository;
@@ -20,15 +21,19 @@ namespace SocialNetwork.Services
             _messagesRepository = messagesRepository;
         }
 
-        public List<DialogModel> GetUserDialogs(string username)
+        public List<DialogModel> GetUserDialogs(int userID)
         {
-            var user = _usersRepository.GetUserByUsername(username);
-            return _dialogsRepository.GetUserDialogsByUserID(user.ID);
+            return _dialogsRepository.GetUserDialogs(userID);
         }
 
         public void CreateDialog(DialogModel dialog)
         {
             _dialogsRepository.Create(dialog);
+        }
+
+        public DialogModel GetDialog(int id)
+        {
+            return _dialogsRepository.GetDialogWithMessages(id);
         }
     }
 }
