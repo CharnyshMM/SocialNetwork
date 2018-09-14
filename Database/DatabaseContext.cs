@@ -15,6 +15,10 @@ namespace Database
 
         DbSet<FriendshipModel> Friendships { get; set; }
 
+        DbSet<DialogModel> Dialogs { get; set; }
+
+        DbSet<UserDialogModel> UserDialogs { get; set; }
+
         DbSet<PostModel> Posts { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -23,13 +27,24 @@ namespace Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserModel>()
-                .HasOne(u => u.Credential)
-                .WithOne(c => c.User);
+            modelBuilder.Entity<CredentialModel>()
+                .HasOne(u => u.User)
+                .WithOne(c => c.Credential);
 
-            modelBuilder.Entity<UserModel>()
-                .HasMany(u => u.Messages)
-                .WithOne(m => m.Author);
+            modelBuilder.Entity<UserDialogModel>()
+                .HasKey(ud => new { ud.UserID, ud.DialogID });
+
+            modelBuilder.Entity<UserDialogModel>()
+                .HasOne(du => du.Dialog)
+                .WithMany(d => d.DialogUsers);
+
+            modelBuilder.Entity<UserDialogModel>()
+                .HasOne(du => du.User)
+                .WithMany(u => u.UserDialogs);
+
+            modelBuilder.Entity<DialogModel>()
+                .HasMany(d => d.DialogUsers)
+                .WithOne(du => du.Dialog);
 
             modelBuilder.Entity<UserModel>()
                 .HasMany(u => u.Posts)

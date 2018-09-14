@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180907084919_init")]
+    [Migration("20180914123104_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,8 @@ namespace Database.Migrations
 
                     b.Property<string>("Password");
 
+                    b.Property<string>("Role");
+
                     b.Property<int>("UserID");
 
                     b.Property<string>("Username");
@@ -38,6 +40,17 @@ namespace Database.Migrations
                         .IsUnique();
 
                     b.ToTable("Credentials");
+                });
+
+            modelBuilder.Entity("Database.Models.DialogModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("ID");
+
+                    b.ToTable("DialogModel");
                 });
 
             modelBuilder.Entity("Database.Models.FriendshipModel", b =>
@@ -69,9 +82,13 @@ namespace Database.Migrations
 
                     b.Property<string>("Content");
 
+                    b.Property<int>("DialogID");
+
                     b.HasKey("ID");
 
                     b.HasIndex("AuthorID");
+
+                    b.HasIndex("DialogID");
 
                     b.ToTable("Messages");
                 });
@@ -93,11 +110,30 @@ namespace Database.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("Database.Models.UserDialogModel", b =>
+                {
+                    b.Property<int>("UserID");
+
+                    b.Property<int>("DialogID");
+
+                    b.HasKey("UserID", "DialogID");
+
+                    b.HasIndex("DialogID");
+
+                    b.ToTable("UserDialogModel");
+                });
+
             modelBuilder.Entity("Database.Models.UserModel", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Sex");
 
                     b.HasKey("ID");
 
@@ -126,8 +162,13 @@ namespace Database.Migrations
             modelBuilder.Entity("Database.Models.MessageModel", b =>
                 {
                     b.HasOne("Database.Models.UserModel", "Author")
-                        .WithMany("Messages")
+                        .WithMany()
                         .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Database.Models.DialogModel", "Dialog")
+                        .WithMany("Messages")
+                        .HasForeignKey("DialogID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -136,6 +177,19 @@ namespace Database.Migrations
                     b.HasOne("Database.Models.UserModel", "Author")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Database.Models.UserDialogModel", b =>
+                {
+                    b.HasOne("Database.Models.DialogModel", "Dialog")
+                        .WithMany("DialogUsers")
+                        .HasForeignKey("DialogID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Database.Models.UserModel", "User")
+                        .WithMany("UserDialogs")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

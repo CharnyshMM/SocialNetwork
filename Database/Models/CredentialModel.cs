@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Database.Models
@@ -10,7 +11,9 @@ namespace Database.Models
 
         public int UserID { get; set; } // dependent
 
-        public UserModel User { get; set; }
+        public UserModel User { get; set; } 
+
+        public string Role { get; set; }
 
         public string Username { get; set; }
 

@@ -8,11 +8,26 @@ namespace Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "DialogModel",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DialogModel", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Sex = table.Column<int>(nullable: false),
+                    Country = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,6 +41,7 @@ namespace Database.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserID = table.Column<int>(nullable: false),
+                    Role = table.Column<string>(nullable: true),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true)
                 },
@@ -72,6 +88,7 @@ namespace Database.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DialogID = table.Column<int>(nullable: false),
                     AuthorID = table.Column<int>(nullable: false),
                     Content = table.Column<string>(nullable: true)
                 },
@@ -82,6 +99,12 @@ namespace Database.Migrations
                         name: "FK_Messages_Users_AuthorID",
                         column: x => x.AuthorID,
                         principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_DialogModel_DialogID",
+                        column: x => x.DialogID,
+                        principalTable: "DialogModel",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -101,6 +124,30 @@ namespace Database.Migrations
                     table.ForeignKey(
                         name: "FK_Posts_Users_AuthorID",
                         column: x => x.AuthorID,
+                        principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserDialogModel",
+                columns: table => new
+                {
+                    UserID = table.Column<int>(nullable: false),
+                    DialogID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDialogModel", x => new { x.UserID, x.DialogID });
+                    table.ForeignKey(
+                        name: "FK_UserDialogModel_DialogModel_DialogID",
+                        column: x => x.DialogID,
+                        principalTable: "DialogModel",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserDialogModel_Users_UserID",
+                        column: x => x.UserID,
                         principalTable: "Users",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -128,9 +175,19 @@ namespace Database.Migrations
                 column: "AuthorID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_DialogID",
+                table: "Messages",
+                column: "DialogID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_AuthorID",
                 table: "Posts",
                 column: "AuthorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDialogModel_DialogID",
+                table: "UserDialogModel",
+                column: "DialogID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -146,6 +203,12 @@ namespace Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "UserDialogModel");
+
+            migrationBuilder.DropTable(
+                name: "DialogModel");
 
             migrationBuilder.DropTable(
                 name: "Users");

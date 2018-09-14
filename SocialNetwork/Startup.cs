@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Database.Interfaces;
+using Database.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace SocialNetwork
 {
@@ -34,9 +38,24 @@ namespace SocialNetwork
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
 
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<ICredentialsRepository, CredentialsRepository>();
+            services.AddScoped<IFriendshipRepository, FriendshipsRepository>();
+            services.AddScoped<IMessagesRepository, MessagesRepository>();
+            services.AddScoped<IDialogsRepository, DialogsRepository>();
+            services.AddScoped<IPostsRepository, PostsRepository>();
+            
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                    {
+                        options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +74,8 @@ namespace SocialNetwork
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

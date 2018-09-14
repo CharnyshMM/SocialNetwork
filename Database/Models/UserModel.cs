@@ -6,15 +6,21 @@ namespace Database.Models
 {
     public class UserModel
     {
+        public enum SexEnumeration { Male, Fermale, Undefined }
+
         public int ID { get; set; }
+
+        public string Name { get; set; }
+
+        public SexEnumeration Sex { get; set; }
+
+        public string Country { get; set; }
 
         public List<FriendshipModel> Friends { get; set; }
 
         public List<FriendshipModel> FriendOf { get; set; }
 
-        public List<MessageModel> Messages { get; set; }
-
-        //public int CredentialID { get; set; }
+        public List<UserDialogModel> UserDialogs { get; set; }
 
         public CredentialModel Credential { get; set; } // primary
 

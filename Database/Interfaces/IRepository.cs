@@ -4,7 +4,16 @@ using System.Text;
 
 namespace Database.Interfaces
 {
-    interface IRepository
+    public interface IRepository<TModel>
     {
+        void Create(TModel item);
+
+        TModel GetItem(int id);
+
+        List<TModel> GetItems();
+
+        void Update(TModel item);
+
+        void Remove(int id);
     }
 }

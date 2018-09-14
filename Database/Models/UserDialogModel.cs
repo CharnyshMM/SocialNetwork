@@ -4,19 +4,14 @@ using System.Text;
 
 namespace Database.Models
 {
-    public class MessageModel
+    public class UserDialogModel
     {
-        public int ID { get; set; }
+        public int UserID { get; set; }
+
+        public UserModel User {get;set;}
 
         public int DialogID { get; set; }
 
         public DialogModel Dialog { get; set; }
-
-        public int AuthorID { get; set; }
-
-        public UserModel Author { get; set; }
-
-        public string Content { get; set; }
-
     }
 }

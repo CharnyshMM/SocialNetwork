@@ -7,5 +7,6 @@ namespace Database.Interfaces
 {
     public interface IUsersRepository : IRepository<UserModel>
     {
+        UserModel GetUserByUsername(string username);
     }
 }
