@@ -9,5 +9,6 @@ namespace Database.Interfaces
     {
         List<DialogModel> GetUserDialogs(int userID);
         DialogModel GetDialogWithMessages(int dialogID);
+        DialogModel GetDialogBetweenUsersIfExists(int userId1, int userId2);
     }
 }

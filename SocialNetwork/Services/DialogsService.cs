@@ -35,5 +35,20 @@ namespace SocialNetwork.Services
         {
             return _dialogsRepository.GetDialogWithMessages(id);
         }
+
+        public void SendMessage(MessageModel message)
+        {
+            _messagesRepository.Create(message);
+        }
+
+        public void RemoveDialog(int id)
+        {
+            _dialogsRepository.Remove(id);
+        }
+
+        public DialogModel GetDialogBetweenUsersIfExists(int userId1, int userId2)
+        {
+            return _dialogsRepository.GetDialogBetweenUsersIfExists(userId1, userId2);
+        }
     }
 }

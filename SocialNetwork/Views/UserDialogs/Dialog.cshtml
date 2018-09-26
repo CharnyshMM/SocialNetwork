@@ -1,0 +1,47 @@
+﻿@model SocialNetwork.ViewModels.MessageViewModel
+@section Styles {
+	<link rel="stylesheet" href="~/css/messages/messages.css" />
+	<script type="text/javascript" src="~/js/messages.js"></script>
+}
+
+@{
+	ViewData["Title"] = "Dialog";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var dialog = (SocialNetwork.ViewModels.DialogViewModel)ViewData["Dialog"];
+}
+
+<h2>Dialog with  @dialog.Adressee</h2>
+
+<h4>Messages:</h4>
+<section class="messagesBox">
+	@for (int i = 0; i < dialog.Messages.Count; i++)
+	{
+		@if (dialog.Messages[i].AuthorID == dialog.AdresseeID)
+		{
+			<blockquote class="bg-success">
+				<p>
+					<b>@dialog.Messages[i].Author:</b>
+					@dialog.Messages[i].Content
+				</p>
+			</blockquote>
+
+		}
+		else
+		{
+			<blockquote class="blockquote-reverse">
+				<p>
+					<b>@dialog.Messages[i].Author:</b>
+					@dialog.Messages[i].Content
+				</p>
+			</blockquote>
+		}
+	}
+</section>	
+
+<form asp-controller="UserDialogs" asp-action="NewMessage" asp-route-id="@dialog.ID" method="post">
+	<div class="form-group">
+		<textarea class="form-control" id="messageTextarea" rows="3"  asp-for="Content" placeholder="Your message here: "></textarea>
+	</div>
+	<button class="btn btn-default" type="submit">Send</button>
+</form>
+

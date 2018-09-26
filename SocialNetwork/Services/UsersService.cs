@@ -12,17 +12,21 @@ namespace SocialNetwork.Services
     {
         IUsersRepository _usersRepository;
         ICredentialsRepository _credentialsRepository;
+        IFriendshipsRepository _friendshipsRepository;
 
-        public UsersService(IUsersRepository usersRepository, ICredentialsRepository credentialsRepository)
+        public UsersService(IUsersRepository usersRepository, 
+                            ICredentialsRepository credentialsRepository,
+                            IFriendshipsRepository friendshipsRepository)
         {
             _usersRepository = usersRepository;
             _credentialsRepository = credentialsRepository;
+            _friendshipsRepository = friendshipsRepository;
         }
 
         public UserModel GetUserByUserName(string userName)
         {
             var cred = _credentialsRepository.GetUserCredentialsByUsername(userName);
-            return _usersRepository.GetItem(cred.User.ID);
+            return _usersRepository.GetItem(cred.UserID);
         }
 
         public int GetUserIDByUsername(string userName)
@@ -31,6 +35,40 @@ namespace SocialNetwork.Services
             if (cred != null)
                 return cred.UserID;
             throw new ArgumentException("No such username!!!!)))");
+        }
+
+        public List<UserModel> GetUsers()
+        {
+            return _usersRepository.GetItems();
+        }
+
+        public void CreateFriendship(FriendshipModel friendship)
+        {
+            _friendshipsRepository.Create(friendship);
+        }
+
+        public void CreateFriendship(int userId1, int userId2)
+        {
+            _friendshipsRepository.Create(new FriendshipModel
+            {
+                MeID = userId1,
+                FriendID = userId2
+            });
+        }
+
+        public FriendshipModel GetFriendshipIfExists(int userId1, int userId2)
+        {
+            return _friendshipsRepository.GetFriendshipIfExists(userId1, userId2);
+        }
+
+        public List<FriendshipModel> GetUserFriends(int userId)
+        {
+            return _friendshipsRepository.GetUserFriends(userId);
+        }
+
+        public void RemoveFriendship(int friendshipId)
+        {
+            _friendshipsRepository.Remove(friendshipId);
         }
     }
 }

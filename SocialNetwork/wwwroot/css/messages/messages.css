@@ -1,0 +1,5 @@
+﻿.messagesBox {
+	overflow-y: auto;
+	max-height: 65vh;
+	margin-bottom: 5px;
+}

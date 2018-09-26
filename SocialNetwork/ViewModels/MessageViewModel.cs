@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Database.Models
+namespace SocialNetwork.ViewModels
 {
-    public class MessageModel
+    public class MessageViewModel
     {
         public int ID { get; set; }
 
         public int AuthorID { get; set; }
 
-        public UserModel Author { get; set; }
-
-        public int DialogID { get; set; }
-
-        public DialogModel Dialog { get; set; }
+        public string Author { get; set; }
 
         public DateTime DateSent { get; set; }
+
+        public int DialogID { get; set; }
 
         public string Content { get; set; }
     }

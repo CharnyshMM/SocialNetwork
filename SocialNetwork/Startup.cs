@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+
 using Database.Interfaces;
 using Database.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -44,9 +46,11 @@ namespace SocialNetwork
 
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapper();
+
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<ICredentialsRepository, CredentialsRepository>();
-            services.AddScoped<IFriendshipRepository, FriendshipsRepository>();
+            services.AddScoped<IFriendshipsRepository, FriendshipsRepository>();
             services.AddScoped<IMessagesRepository, MessagesRepository>();
             services.AddScoped<IDialogsRepository, DialogsRepository>();
             services.AddScoped<IPostsRepository, PostsRepository>();
@@ -59,6 +63,7 @@ namespace SocialNetwork
                     {
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     });
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

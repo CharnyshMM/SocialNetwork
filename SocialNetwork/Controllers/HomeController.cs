@@ -10,6 +10,8 @@ using Database.Models;
 using Database.Interfaces;
 using Database.Interfaces;
 using Database.Models;
+using AutoMapper;
+using SocialNetwork.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
 namespace SocialNetwork.Controllers
@@ -17,22 +19,29 @@ namespace SocialNetwork.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private ICredentialsRepository _credentialsRepository; 
-        public HomeController(ICredentialsRepository credentialsRepository)
+        private ICredentialsRepository _credentialsRepository;
+        private IUsersRepository _usersRepository;
+        private IUsersService _usersService;
+        private IMapper _mapper;
+
+        public HomeController(ICredentialsRepository credentialsRepository,
+                              IUsersRepository usersRepository,
+                              IUsersService usersService,
+                              IMapper mapper)
         {
             _credentialsRepository = credentialsRepository;
+            _usersRepository = usersRepository;
+            _usersService = usersService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
             // later there should open a page of current user
-            var li = _credentialsRepository.GetItems();
-
-            var u2 = new UserModel
-            {
-                Name = $"{User.Identity.Name} - current!!!"
-            };
-            return View(new List<UserModel> {u2});
+            return View(
+                "Index", 
+                _mapper.Map<ViewModels.ProfileViewModel>(_usersService.GetUserByUserName(User.Identity.Name))
+                );
         }
 
         public IActionResult About()

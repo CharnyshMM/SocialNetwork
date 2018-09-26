@@ -1,18 +1,11 @@
 ﻿@{
 	ViewData["Title"] = "Home Page";
-	@model List<Database.Models.UserModel>
+	@model SocialNetwork.ViewModels.ProfileViewModel
 }
 
 <div>
-	<h1>Social Network Index</h1>
-	<a asp-controller="UserDialogsController" asp-action="Index" >My Dialogs</a>
-	<h3>Users registred already:</h3>
-	<ul>
-		@{
-			foreach (var u in Model)
-			{
-				@: <li>@u.Name</li>
-			}
-		}
-	</ul>
+	<h1>My profile</h1>
+	<div class="card">
+		<h2 class="ohh">@Model.Name</h2>
+	</div>
 </div>

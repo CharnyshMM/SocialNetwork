@@ -5,7 +5,10 @@ using System.Text;
 
 namespace Database.Interfaces
 {
-    public interface IFriendshipRepository : IRepository<FriendshipModel>
+    public interface IFriendshipsRepository : IRepository<FriendshipModel>
     {
+        FriendshipModel GetFriendshipIfExists(int userId1, int userId2);
+
+        List<FriendshipModel> GetUserFriends(int userId);
     }
 }

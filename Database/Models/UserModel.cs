@@ -29,5 +29,10 @@ namespace Database.Models
         public CredentialModel Credential { get; set; } // primary
 
         public List<PostModel> Posts { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
