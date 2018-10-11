@@ -1,11 +1,13 @@
 ﻿@{
 	ViewData["Title"] = "Home Page";
-	@model SocialNetwork.ViewModels.ProfileViewModel
+	@model SocialNetwork.ViewModels.UserProfileViewModel
 }
 
 <div>
 	<h1>My profile</h1>
 	<div class="card">
 		<h2 class="ohh">@Model.Name</h2>
+
+		<h3>@Model.Country</h3>
 	</div>
 </div>

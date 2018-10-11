@@ -40,7 +40,7 @@ namespace SocialNetwork.Controllers
             // later there should open a page of current user
             return View(
                 "Index", 
-                _mapper.Map<ViewModels.ProfileViewModel>(_usersService.GetUserByUserName(User.Identity.Name))
+                _mapper.Map<ViewModels.UserProfileViewModel>(_usersService.GetUserByUserName(User.Identity.Name))
                 );
         }
 

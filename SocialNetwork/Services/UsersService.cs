@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Database.Models;
 using Database.Interfaces;
 using SocialNetwork.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SocialNetwork.Services
 {
@@ -23,6 +24,11 @@ namespace SocialNetwork.Services
             _friendshipsRepository = friendshipsRepository;
         }
 
+        public UserModel GetUserById(int userId)
+        {
+            return _usersRepository.GetItem(userId);
+        }
+
         public UserModel GetUserByUserName(string userName)
         {
             var cred = _credentialsRepository.GetUserCredentialsByUsername(userName);
@@ -35,6 +41,11 @@ namespace SocialNetwork.Services
             if (cred != null)
                 return cred.UserID;
             throw new ArgumentException("No such username!!!!)))");
+        }
+
+        public List<UserModel> GetUsersByPartialName(string name)
+        {
+            return _usersRepository.GetUsersByPartialName(name);
         }
 
         public List<UserModel> GetUsers()

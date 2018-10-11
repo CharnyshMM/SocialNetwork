@@ -26,7 +26,7 @@ namespace Database.Repositories
 
         public CredentialModel GetUserCredentialsByUsername(string userName)
         {
-            return DbSet.Where(c => c.Username == userName).Single();
+            return DbSet.Where(c => c.Username == userName).SingleOrDefault();
         }
     }
 }

@@ -10,8 +10,14 @@ namespace SocialNetwork.MappingProfiles
     {
         public UsersMappingProfile()
         {
-            CreateMap<Database.Models.UserModel, SocialNetwork.ViewModels.ProfileViewModel>();
-            CreateMap<SocialNetwork.ViewModels.ProfileViewModel, Database.Models.UserModel>();
+            CreateMap<Database.Models.UserModel, ViewModels.UserProfileViewModel>()
+                .ForMember(p => p.IsFriend, o =>
+                   o.ResolveUsing(
+                       (src, dest, destMember, resContext) => 
+                           dest.IsFriend = resContext.Items.ContainsKey("IsFriend") ? (bool)resContext.Items["IsFriend"] : false
+                       )
+                 );
+            CreateMap<ViewModels.UserProfileViewModel, Database.Models.UserModel>();
         }
     }
 }

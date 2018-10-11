@@ -50,7 +50,11 @@ namespace SocialNetwork.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!_credentialsRepository.UsernameExists(registrationData.Username))
+                if (registrationData.Password != registrationData.RePassword)
+                {
+                    ModelState.AddModelError("RePassword", "Passwords don't match");
+                }                    
+                else if (!_credentialsRepository.UsernameExists(registrationData.Username))
                 {
                     var newUserCredentials = new CredentialModel
                     {

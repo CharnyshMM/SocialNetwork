@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Database.Interfaces;
 using Database.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Database.Repositories
 {
@@ -16,6 +17,11 @@ namespace Database.Repositories
         public UserModel GetUserByUsername(string username)
         {
             return DbSet.Where(u => u.Credential.Username == username).Single();
+        }
+
+        public List<UserModel> GetUsersByPartialName(string name)
+        {
+            return DbSet.Where(u => u.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase)).ToList();
         }
     }
 }

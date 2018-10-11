@@ -17,6 +17,10 @@ namespace SocialNetwork.ViewModels
         public string Password { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
+        public string RePassword { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         [Required]

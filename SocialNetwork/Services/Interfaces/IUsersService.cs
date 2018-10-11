@@ -8,7 +8,11 @@ namespace SocialNetwork.Services.Interfaces
 {
     public interface IUsersService
     {
+        UserModel GetUserById(int userId);
+
         UserModel GetUserByUserName(string userName);
+
+        List<UserModel> GetUsersByPartialName(string name);
 
         int GetUserIDByUsername(string userName);
 
@@ -23,5 +27,6 @@ namespace SocialNetwork.Services.Interfaces
         void CreateFriendship(int userId1, int userId2);
 
         void RemoveFriendship(int friendshipId);
+
     }
 }

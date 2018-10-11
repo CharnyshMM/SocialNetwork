@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Database.Interfaces;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Database.Repositories
 {
@@ -22,7 +23,10 @@ namespace Database.Repositories
 
         public List<FriendshipModel> GetUserFriends(int userId)
         {
-            return DbSet.Where(f => f.FriendID == userId || f.MeID == userId).ToList();
+            return DbSet.Where(f => f.FriendID == userId || f.MeID == userId)
+                .Include(f => f.Friend)
+                .Include(f => f.Me)
+                .ToList();
         }
     }
 }
