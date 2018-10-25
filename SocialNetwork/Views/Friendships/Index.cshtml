@@ -22,7 +22,7 @@
 					<a class="btn btn-default" asp-controller="UserDialogs" asp-action="NewDialog" asp-route-userId="@Model[i].FriendId">
 						Dialog
 					</a>
-					<a class="btn btn-danger" asp-controller="Friendships" asp-action="RemoveFriend">
+					<a class="btn btn-danger" asp-controller="Friendships" asp-action="RemoveFriendship" asp-route-id="@Model[i].ID">
 						Remove
 					</a>
 				</td>
@@ -38,7 +38,7 @@
 					<a class="btn btn-default" asp-controller="UserDialogs" asp-action="NewDialog" asp-route-userId="@Model[i].MeID">
 						Dialog
 					</a>
-					<a class="btn btn-danger" asp-controller="Friendships" asp-action="RemoveFriend">
+					<a class="btn btn-danger" asp-controller="Friendships" asp-action="RemoveFriendship" asp-route-id="@Model[i].ID">
 						Remove
 					</a>
 				</td>

@@ -40,7 +40,6 @@ namespace SocialNetwork.Controllers
 
         public IActionResult GetPeople(string name=null)
         {
-          
             List<UserModel> users;
             if (name == null || name == "")
             {
@@ -51,6 +50,12 @@ namespace SocialNetwork.Controllers
                 users = _usersService.GetUsersByPartialName(name);
             }
             return View("Search", _mapper.Map<List<UsersListItemViewModel>>(users));
+        }
+
+        public IActionResult RemoveFriendship(int id)
+        {
+            _usersService.RemoveFriendship(id);
+            return Index();
         }
     }
 } 

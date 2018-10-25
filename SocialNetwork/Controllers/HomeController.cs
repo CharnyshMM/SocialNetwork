@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using SocialNetwork.Models;
 using Database.Models;
 using Database.Interfaces;
-using Database.Interfaces;
 using Database.Models;
 using AutoMapper;
 using SocialNetwork.Services.Interfaces;
