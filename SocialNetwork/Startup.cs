@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SocialNetwork.Services;
 using SocialNetwork.Services.Interfaces;
+using SocialNetwork.Hubs;
 
 namespace SocialNetwork
 {
@@ -64,8 +65,9 @@ namespace SocialNetwork
                         options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,6 +88,11 @@ namespace SocialNetwork
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
 
             app.UseMvc(routes =>
             {

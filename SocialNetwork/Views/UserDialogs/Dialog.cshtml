@@ -2,6 +2,8 @@
 @section Styles {
 	<link rel="stylesheet" href="~/css/messages/messages.css" />
 	<script type="text/javascript" src="~/js/messages.js"></script>
+	<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+	<script src="~/js/chat.js"></script>
 }
 
 @{
@@ -36,12 +38,18 @@
 			</blockquote>
 		}
 	}
-</section>	
+</section>
+
 
 <form asp-controller="UserDialogs" asp-action="NewMessage" asp-route-id="@dialog.ID" method="post">
 	<div class="form-group">
-		<textarea class="form-control" id="messageTextarea" rows="3"  asp-for="Content" placeholder="Your message here: "></textarea>
+		<textarea class="form-control" id="messageTextarea" rows="3" asp-for="Content" placeholder="Your message here: "></textarea>
 	</div>
 	<button class="btn btn-default" type="submit">Send</button>
 </form>
+
+<script async type="text/javascript">
+	var json_model = @Html.Raw(Json.Serialize(Model));
+	run_js_with_model(json_model);
+</script>
 
