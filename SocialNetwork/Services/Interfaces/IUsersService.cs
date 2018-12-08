@@ -16,6 +16,8 @@ namespace SocialNetwork.Services.Interfaces
 
         int GetUserIDByUsername(string userName);
 
+        void UpdateUser(UserModel model);
+
         List<UserModel> GetUsers();
 
         List<FriendshipModel> GetUserFriends(int userId);

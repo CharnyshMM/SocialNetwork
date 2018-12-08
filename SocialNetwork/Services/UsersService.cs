@@ -43,6 +43,11 @@ namespace SocialNetwork.Services
             throw new ArgumentException("No such username!!!!)))");
         }
 
+        public void UpdateUser(UserModel model)
+        {
+            _usersRepository.Update(model);
+        }
+
         public List<UserModel> GetUsersByPartialName(string name)
         {
             return _usersRepository.GetUsersByPartialName(name);

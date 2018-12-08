@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace SocialNetwork.Controllers
 {
     [Authorize]
+    
     public class HomeController : Controller
     {
         private ICredentialsRepository _credentialsRepository;
@@ -33,7 +34,7 @@ namespace SocialNetwork.Controllers
             _usersService = usersService;
             _mapper = mapper;
         }
-
+    
         public IActionResult Index()
         {
             // later there should open a page of current user

@@ -89,21 +89,17 @@ namespace SocialNetwork.Controllers
                 addressee = dialog.Addressee.Name;
             }
 
-            ViewData["Dialog"] = new DialogViewModel
+            var dialogViewModel = new DialogViewModel
             {
                 ID = id,
                 Messages = messageVMs,
-                AdresseeID = addresseeID,
-                Adressee = addressee
-            };
+                AddresseeID = addresseeID,
+                Addressee = addressee,
+                MyID = myId,
+                Me = User.Identity.Name
+            };    
 
-            var username = User.Identity.Name;           
-
-            return View("Dialog", new MessageViewModel
-            {
-                AuthorID = _usersService.GetUserIDByUsername(username),
-                DialogID = dialog.ID
-            });
+            return View("Dialog", dialogViewModel);
         }
     }
 }

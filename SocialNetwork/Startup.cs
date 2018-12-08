@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using SocialNetwork.Services;
 using SocialNetwork.Services.Interfaces;
 using SocialNetwork.Hubs;
+using Microsoft.Owin.Cors;
+using Owin;
 
 namespace SocialNetwork
 {
@@ -87,11 +90,13 @@ namespace SocialNetwork
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            
+
             app.UseAuthentication();
 
-            app.UseSignalR(routes =>
+            app.UseSignalR(route =>
             {
-                routes.MapHub<ChatHub>("/chatHub");
+                route.MapHub<ChatHub>("/chathub");
             });
 
             app.UseMvc(routes =>
@@ -100,6 +105,12 @@ namespace SocialNetwork
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+           
+
+            
+            
+            //app.UseMvc();
         }
     }
 }

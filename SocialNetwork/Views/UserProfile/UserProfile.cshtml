@@ -2,6 +2,7 @@
 
 @section Styles {
 	<link rel="stylesheet" href="~/css/messages/messages.css" />
+	
 }
 
 @{
@@ -17,17 +18,8 @@
 </figure>
 
 <section class="user-description">
-	<div class="infoblock">
-		<h3 class="infoblock__info">@Model.Name</h3>
-	</div>
-	<div class="infoblock">
-		<span class="infoblock__title">Sex:</span>
-		<h3 class="infoblock__info">@Model.Sex</h3>
-	</div>
-	<div>
-		<span class="infoblock__title">Country:</span>
-		<h3 class="infoblock__info">@Model.Country</h3>
-	</div>
+	@await Html.PartialAsync("UserDetails", Model);
+
 	<div>
 		@if (Model.IsFriend)
 		{

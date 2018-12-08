@@ -2,12 +2,11 @@
 	ViewData["Title"] = "Home Page";
 	@model SocialNetwork.ViewModels.UserProfileViewModel
 }
+@section Styles {
+	<link rel="stylesheet" href="~/css/user-details/user-details.css" />
+	}
 
 <div>
 	<h1>My profile</h1>
-	<div class="card">
-		<h2 class="ohh">@Model.Name</h2>
-
-		<h3>@Model.Country</h3>
-	</div>
+	@await Html.PartialAsync("UserDetails", Model)
 </div>

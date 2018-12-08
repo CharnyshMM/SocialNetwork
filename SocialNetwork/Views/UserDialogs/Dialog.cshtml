@@ -1,4 +1,4 @@
-﻿@model SocialNetwork.ViewModels.MessageViewModel
+﻿@model SocialNetwork.ViewModels.DialogViewModel
 @section Styles {
 	<link rel="stylesheet" href="~/css/messages/messages.css" />
 	<script type="text/javascript" src="~/js/messages.js"></script>
@@ -9,21 +9,21 @@
 @{
 	ViewData["Title"] = "Dialog";
 	Layout = "~/Views/Shared/_Layout.cshtml";
-	var dialog = (SocialNetwork.ViewModels.DialogViewModel)ViewData["Dialog"];
+	//var dialog = (SocialNetwork.ViewModels.DialogViewModel)ViewData["Dialog"];
 }
 
-<h2>Dialog with  @dialog.Adressee</h2>
+<h2>Dialog with  @Model.Addressee</h2>
 
 <h4>Messages:</h4>
-<section class="messagesBox">
-	@for (int i = 0; i < dialog.Messages.Count; i++)
+<section id="messagesBox" class="messagesBox">
+	@for (int i = 0; i < Model.Messages.Count; i++)
 	{
-		@if (dialog.Messages[i].AuthorID == dialog.AdresseeID)
+		@if (Model.Messages[i].AuthorID == Model.AddresseeID)
 		{
 			<blockquote class="bg-success">
 				<p>
-					<b>@dialog.Messages[i].Author:</b>
-					@dialog.Messages[i].Content
+					<b>@Model.Messages[i].Author:</b>
+					@Model.Messages[i].Content
 				</p>
 			</blockquote>
 
@@ -32,8 +32,7 @@
 		{
 			<blockquote class="blockquote-reverse">
 				<p>
-					<b>@dialog.Messages[i].Author:</b>
-					@dialog.Messages[i].Content
+					@Model.Messages[i].Content
 				</p>
 			</blockquote>
 		}
@@ -41,15 +40,16 @@
 </section>
 
 
-<form asp-controller="UserDialogs" asp-action="NewMessage" asp-route-id="@dialog.ID" method="post">
+<form id="messageForm">
 	<div class="form-group">
-		<textarea class="form-control" id="messageTextarea" rows="3" asp-for="Content" placeholder="Your message here: "></textarea>
+		<textarea class="form-control" id="messageTextarea" rows="3" placeholder="Your message here: "></textarea>
 	</div>
-	<button class="btn btn-default" type="submit">Send</button>
+	<button id="sendButton" class="btn btn-default" type="submit">Send</button>
 </form>
 
-<script async type="text/javascript">
-	var json_model = @Html.Raw(Json.Serialize(Model));
-	run_js_with_model(json_model);
+<script type="text/javascript">
+	var dialog = @Html.Raw(Json.Serialize(Model));
+	
+	run_js_with_model(dialog);
 </script>
 
