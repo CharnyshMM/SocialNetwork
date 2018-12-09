@@ -13,5 +13,9 @@ namespace Database.Models
         public UserModel Author { get; set; }
 
         public string Content { get; set; }
+
+        public string ImageLinkContent { get; set; }
+
+        public DateTime CreationDate { get; set; }
     }
 }

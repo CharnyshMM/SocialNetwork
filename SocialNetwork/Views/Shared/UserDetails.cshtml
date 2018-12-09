@@ -11,22 +11,19 @@
 	<figure class="user-details__figure">
 		<img class="user-details__figure__image" src="~/images/default_avatar.png" />
 	</figure>
-	<table class="table user-details__table">
-		<thead></thead>
-		<tbody>
-			<tr>
-				<th> ID </th>
-				<td> @Model.Username </td>
-			</tr>
-			<tr>
-				<th> Sex </th>
-				<td> @Model.Sex </td>
-			</tr>
-			<tr>
-				<th> Country </th>
-				<td> @Model.Country </td>
-			</tr>
-		</tbody>
-	</table>
+	<ul class="user-details__list">
+		<li class="user-details__list__item">
+			@Model.Name
+		</li>
+		<li class="user-details__list__item">
+			<i>@@@Model.Username</i>
+		</li>
+		<li class="user-details__list__item">
+			@Model.Sex
+		</li>
+		<li class="user-details__list__item">
+			@Model.Country
+		</li>
+	</ul>
 </section>
 

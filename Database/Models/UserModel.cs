@@ -6,7 +6,7 @@ namespace Database.Models
 {
     public class UserModel
     {
-        public enum SexEnumeration { Male, Fermale, Undefined }
+        public enum SexEnumeration { Male, Female, Undefined }
 
         public int ID { get; set; }
 

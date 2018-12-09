@@ -39,7 +39,7 @@ namespace SocialNetwork.Controllers
                 if (userCredential != null)
                 {
                     await Authenticate(userCredential.Username, userCredential.Role);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "UserProfile");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
@@ -71,17 +71,13 @@ namespace SocialNetwork.Controllers
                         Credential = newUserCredentials
                     };
 
-                    _usersRepository.Create(newUser); // first u need to save Primary Item to DB, and the dependent one'd be added automatically
-
-                    //_credentialsRepository.Create(newUserCredentials);
-
+                    _usersRepository.Create(newUser); 
                     
-
                     await Authenticate(newUserCredentials.Username, newUserCredentials.Role);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "UserProfile");
                 }
                 else
-                    ModelState.AddModelError("", "Login already used");
+                    ModelState.AddModelError("Username", "Username already used");
             }
             return View(registrationData);
         }

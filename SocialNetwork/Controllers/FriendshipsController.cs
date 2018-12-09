@@ -12,6 +12,7 @@ using SocialNetwork.ViewModels;
 namespace SocialNetwork.Controllers
 {
     [Authorize]
+    [Route("Frienships/[action]")]
     public class FriendshipsController : Controller
     {
         IUsersService _usersService;
@@ -24,21 +25,32 @@ namespace SocialNetwork.Controllers
 
         public IActionResult Index()
         {
-            var userId = _usersService.GetUserIDByUsername(User.Identity.Name);
-            ViewData["MyID"] = userId;
+            var user = _usersService.GetUserByUsername(User.Identity.Name);
+            ViewData["MyID"] = user.ID;
             
-            var friendships = _usersService.GetUserFriends(userId);
-            return View("Index", _mapper.Map<List<FriendshipViewModel>>(friendships));
+            var friendships = _usersService.GetUserFriends(user.ID);
+            var friendshipsVMs = _mapper.Map<List<FriendshipViewModel>>(friendships);
+            foreach (var f in friendshipsVMs)
+            {
+                if (f.MeID != user.ID)
+                {
+                    f.FriendId = f.MeID;
+                    f.MeID = user.ID;
+                }
+                var friendVM = _usersService.GetUserById(f.FriendId);
+                f.Friend = _mapper.Map<UsersListItemViewModel>(friendVM);
+            }
+            return View("Index",friendshipsVMs);
         }
 
         public IActionResult NewFriendship(int id)
         {
             var myId = _usersService.GetUserIDByUsername(User.Identity.Name);
             _usersService.CreateFriendship(myId, id);
-            return Redirect($"/UserProfile/UserProfile/{id}");
+            return Redirect($"/UserProfile/UserProfile?id={id}");
         }
 
-        public IActionResult GetPeople(string name=null)
+        public IActionResult GetPeople([FromQuery]string name)
         {
             List<UserModel> users;
             if (name == null || name == "")
@@ -52,10 +64,20 @@ namespace SocialNetwork.Controllers
             return View("Search", _mapper.Map<List<UsersListItemViewModel>>(users));
         }
 
+        
+       
         public IActionResult RemoveFriendship(int id)
         {
             _usersService.RemoveFriendship(id);
             return Index();
+        }
+
+
+        public IActionResult RemoveFriendshipWithUser(int userId)
+        {
+            var myId = _usersService.GetUserIDByUsername(User.Identity.Name);
+            _usersService.RemoveFriendshipIfExists(myId, userId);
+            return Redirect($"/UserProfile/UserProfile?id={userId}");
         }
     }
 } 

@@ -1,50 +1,20 @@
 ﻿@model List<SocialNetwork.ViewModels.FriendshipViewModel>
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "";
 	int myId = (int)ViewData["MyID"];
-	int friendId = 0;
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Friends</h2>
 <a asp-controller="Friendships" asp-action="GetPeople">Find people</a> 
-<table class="table">
+<ul class="users-list">
 	@for (int i = 0; i < Model.Count; i++)
 	{
-
-		@if (Model[i].MeID == myId)
-		{
-			<tr>
-				<td>
-					@Model[i].Friend
-				</td>
-				<td>
-					<a class="btn btn-default" asp-controller="UserDialogs" asp-action="NewDialog" asp-route-userId="@Model[i].FriendId">
-						Dialog
-					</a>
-					<a class="btn btn-danger" asp-controller="Friendships" asp-action="RemoveFriendship" asp-route-id="@Model[i].ID">
-						Remove
-					</a>
-				</td>
-				</tr>
-				}
-				else
-				{
-			<tr>
-				<td>
-					@Model[i].Me
-				</td>
-				<td>
-					<a class="btn btn-default" asp-controller="UserDialogs" asp-action="NewDialog" asp-route-userId="@Model[i].MeID">
-						Dialog
-					</a>
-					<a class="btn btn-danger" asp-controller="Friendships" asp-action="RemoveFriendship" asp-route-id="@Model[i].ID">
-						Remove
-					</a>
-				</td>
-			</tr>
-				}
-			
-		}
-	</table>
+		<li data-friend-id="@Model[i].FriendId" data-id="@Model[i].ID">
+			<a asp-controller="UserProfile" asp-action="UserProfile" asp-route-id="@Model[i].FriendId">
+				@await Html.PartialAsync("FriendshipListItem", Model[i])
+			</a>
+		</li>
+	}
+</ul>
 

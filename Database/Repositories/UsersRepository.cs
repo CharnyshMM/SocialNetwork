@@ -14,6 +14,11 @@ namespace Database.Repositories
         {
         }
 
+        public UserModel GetUserById(int id)
+        {
+            return DbSet.Include(u => u.Credential).Where(u => u.ID == id).Single();
+        }
+
         public UserModel GetUserByUsername(string username)
         {
             return DbSet.Where(u => u.Credential.Username == username).Single();
@@ -23,5 +28,7 @@ namespace Database.Repositories
         {
             return DbSet.Where(u => u.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase)).ToList();
         }
+
+        
     }
 }

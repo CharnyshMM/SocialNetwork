@@ -11,10 +11,8 @@ namespace SocialNetwork.ViewModels
 
         public int FriendId { get; set; }
 
-        public string Friend { get; set; }
+        public UsersListItemViewModel Friend { get; set; }
 
         public int MeID { get; set; }
-
-        public string Me { get; set; }
     }
 }

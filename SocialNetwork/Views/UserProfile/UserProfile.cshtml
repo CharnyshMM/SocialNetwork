@@ -1,39 +1,51 @@
 ﻿@model SocialNetwork.ViewModels.UserProfileViewModel
 
-@section Styles {
-	<link rel="stylesheet" href="~/css/messages/messages.css" />
-	
-}
-
 @{
-	ViewData["Title"] = "UserProfile";
+	ViewData["Title"] = $"{Model.Name}'s profile";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<h2>UserProfile</h2>
-
-<figure class="user-avatar">
-	<div class="glyphicon-user"> </div>
-</figure>
+<h2>@Model.Name's profile</h2>
 
 <section class="user-description">
-	@await Html.PartialAsync("UserDetails", Model);
+	@await Html.PartialAsync("UserDetails", Model)
 
-	<div>
+	<hr />
+	<div class="flex-panel">
 		@if (Model.IsFriend)
 		{
-			<span class="infoblock__title">You are friends</span>
+			<p>You are friends</p>
+			<div>
+				<a class="btn btn-default" asp-controller="UserDialogs" asp-action="NewDialog" asp-route-userId="@Model.ID">
+					Dialog
+				</a>
+				<a class="btn btn-danger" asp-controller="Friendships" asp-action="RemoveFriendshipWithUser" asp-route-userId="@Model.ID">
+					Not a friend
+				</a>
+			</div>
 		}
 		else
 		{
+			<p>Are you friends with @Model.Name ?</p>
 			<a class="btn btn-default" asp-controller="Friendships" asp-action="NewFriendship" asp-route-id="@Model.ID">
 				Add to Friends
 			</a>
 		}
-
 	</div>
 
+	<hr />
+	@foreach (var p in Model.Posts)
+	{
+		<article>
+			<p>p.Content</p>
+			<a class="btn btn-danger" asp-action="RemovePost" asp-route-id="@p.ID">
+				<span class="glyphicon glyphicon-remove"> </span>
+			</a>
+		</article>
+	}
+
 </section>
+
 
 

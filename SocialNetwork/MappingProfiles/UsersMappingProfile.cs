@@ -13,10 +13,13 @@ namespace SocialNetwork.MappingProfiles
             CreateMap<Database.Models.UserModel, ViewModels.UserProfileViewModel>()
                 .ForMember(p => p.IsFriend, o =>
                    o.ResolveUsing(
-                       (src, dest, destMember, resContext) => 
+                       (src, dest, destMember, resContext) =>
                            dest.IsFriend = resContext.Items.ContainsKey("IsFriend") ? (bool)resContext.Items["IsFriend"] : false
                        )
-                 );
+                 )
+                 .ForMember(p => p.Username, o => o.ResolveUsing(
+                     x => x.Credential.Username
+                 ));
             CreateMap<ViewModels.UserProfileViewModel, Database.Models.UserModel>();
         }
     }

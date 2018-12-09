@@ -61,6 +61,7 @@ namespace SocialNetwork
 
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<IDialogsService, DialogsService>();
+            services.AddScoped<IPostsService, PostsService> ();
             
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -103,7 +104,7 @@ namespace SocialNetwork
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=UserProfile}/{action=Index}");
             });
 
            

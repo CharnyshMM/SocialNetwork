@@ -10,35 +10,27 @@
 }
 
 <h2>Search</h2>
-<form id="search-form" class="form-inline">
-	<div class="form-group">
-		<label for="name-input">Name</label>
-		<input type="text" class="form-control" id="name-input" placeholder="Type in name..">
-	</div>
-	<div class="form-group">
-		<button type="submit" class="btn btn-default glyphicon-search"></button>
-	</div>
+<form action="GetPeople">
+		<div class="search-form">
+				<input type="text" name="name" class="form-control search-form__input" placeholder="Type in name..">
+				<button type="submit" class="btn btn-default search-form__button">
+					<span class="glyphicon glyphicon-search"> </span>
+				</button>
+		</div>
 </form>
 
 <section class="search-results">
-	<table class="table">
+	<ul class="users-list">
 		@for (int i = 0; i < Model.Count; i++)
 		{ 
-			<tr>
-				<td>
-					@Model[i].Name
-				</td>
-				<td>
-					@Model[i].Country
-				</td>
-				<td>
-					<a class="btn btn-default" asp-controller="UserProfile" asp-action="UserProfile" asp-route-id="@Model[i].ID">
-						View Profile
-					</a>
-				</td>
-			</tr>
+			<li data-id="@Model[i].ID">
+				<a asp-controller="UserProfile" asp-action="UserProfile" asp-route-id="@Model[i].ID">
+					@await Html.PartialAsync("UsersListItem", Model[i])
+				</a>
+			</li>
 		}		
-	</table>
+	</ul>
 </section>
+
 
 

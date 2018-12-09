@@ -10,5 +10,7 @@ namespace Database.Interfaces
         UserModel GetUserByUsername(string username);
 
         List<UserModel> GetUsersByPartialName(string name);
+
+        UserModel GetUserById(int id);
     }
 }

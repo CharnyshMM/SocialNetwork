@@ -16,20 +16,35 @@ namespace SocialNetwork.Controllers
     {
         IUsersService _usersService;
         IMapper _mapper;
+        IPostsService _postsService;
 
-        public UserProfileController(IUsersService usersService, IMapper mapper)
+        public UserProfileController(IUsersService usersService, IPostsService postsService, IMapper mapper)
         {
             _usersService = usersService;
             _mapper = mapper;
+            _postsService = postsService;
+        }
+
+        public IActionResult Index()
+        {
+            var user =_usersService.GetUserByUsername(User.Identity.Name);
+            var userVM = _mapper.Map<UserProfileViewModel>(user);
+            userVM.Posts = _postsService.GetUserPosts(user.ID).ToList();
+            return View("MyProfile", userVM);
         }
 
         public IActionResult UserProfile(int id)
         {
             int myId = _usersService.GetUserIDByUsername(User.Identity.Name);
-            var user = _usersService.GetUserById(id);
-            bool isFriendOfCurrentUser = _usersService.GetFriendshipIfExists(id, myId) != null;
-            var profile = _mapper.Map<UserProfileViewModel>(user, opts => opts.Items["IsFriend"] = isFriendOfCurrentUser);
-            return View("UserProfile", profile);
+            if (id != myId)
+            {
+                var user = _usersService.GetUserById(id);
+                bool isFriendOfCurrentUser = _usersService.GetFriendshipIfExists(id, myId) != null;
+                var profile = _mapper.Map<UserProfileViewModel>(user, opts => opts.Items["IsFriend"] = isFriendOfCurrentUser);
+                profile.Posts = _postsService.GetUserPosts(id).ToList();
+                return View("UserProfile", profile);
+            }
+            return Index();
         }
 
         [HttpGet]
@@ -37,16 +52,31 @@ namespace SocialNetwork.Controllers
         {
             int myId = _usersService.GetUserIDByUsername(User.Identity.Name);
             var user = _usersService.GetUserById(myId);
-            return View("UpdateProfile", user);
+            return View("EditProfile", _mapper.Map<UserProfileViewModel>(user));
         }
 
-        [HttpPut]
-        public IActionResult UpdateProfile(UserProfileViewModel userProfile)
+        [HttpPost]
+        public IActionResult UpdateProfile(int id, UserProfileViewModel userProfile)
         {
             int myId = _usersService.GetUserIDByUsername(User.Identity.Name);
+            if (!User.IsInRole("admin") && myId != id)
+                return BadRequest();
             userProfile.ID = myId;
             _usersService.UpdateUser(_mapper.Map<UserModel>(userProfile));
-            return View("UserProfile", userProfile);
+            return Index();
+        }
+
+        public IActionResult PostNewPost(PostModel post)
+        {
+            post.AuthorID = _usersService.GetUserIDByUsername(User.Identity.Name);
+            _postsService.PostNewPost(post);
+            return Index();
+        }
+
+        public IActionResult RemovePost(int postId)
+        {
+            _postsService.RemovePost(postId);
+            return Index();
         }
     }
 }

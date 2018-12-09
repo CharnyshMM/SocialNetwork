@@ -10,7 +10,7 @@ namespace SocialNetwork.Services.Interfaces
     {
         UserModel GetUserById(int userId);
 
-        UserModel GetUserByUserName(string userName);
+        UserModel GetUserByUsername(string userName);
 
         List<UserModel> GetUsersByPartialName(string name);
 
@@ -30,5 +30,6 @@ namespace SocialNetwork.Services.Interfaces
 
         void RemoveFriendship(int friendshipId);
 
+        bool RemoveFriendshipIfExists(int userId1, int userId2);
     }
 }

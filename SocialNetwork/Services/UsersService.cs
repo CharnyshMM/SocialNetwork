@@ -26,13 +26,13 @@ namespace SocialNetwork.Services
 
         public UserModel GetUserById(int userId)
         {
-            return _usersRepository.GetItem(userId);
+            return _usersRepository.GetUserById(userId);
         }
 
-        public UserModel GetUserByUserName(string userName)
+        public UserModel GetUserByUsername(string userName)
         {
             var cred = _credentialsRepository.GetUserCredentialsByUsername(userName);
-            return _usersRepository.GetItem(cred.UserID);
+            return _usersRepository.GetUserById(cred.UserID);
         }
 
         public int GetUserIDByUsername(string userName)
@@ -85,6 +85,17 @@ namespace SocialNetwork.Services
         public void RemoveFriendship(int friendshipId)
         {
             _friendshipsRepository.Remove(friendshipId);
+        }
+
+        public bool RemoveFriendshipIfExists(int userId1, int userId2)
+        {
+            var f = _friendshipsRepository.GetFriendshipIfExists(userId1, userId2);
+            if (f is null)
+            {
+                return false;
+            }
+            _friendshipsRepository.Remove(f.ID);
+            return true;
         }
     }
 }
