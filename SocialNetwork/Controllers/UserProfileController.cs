@@ -73,9 +73,9 @@ namespace SocialNetwork.Controllers
             return Index();
         }
 
-        public IActionResult RemovePost(int postId)
+        public IActionResult RemovePost(int id)
         {
-            _postsService.RemovePost(postId);
+            _postsService.RemovePost(id);
             return Index();
         }
     }
